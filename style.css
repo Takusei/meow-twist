@@ -1,27 +1,28 @@
 body {
   margin: 0;
-  overflow: hidden;
   background: transparent;
   font-family: sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
   height: 100vh;
-  padding-top: 100px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
 }
 
 .container {
-  background-color: #2f2f2f;
-  overflow: hidden;
+  position: relative;
   width: 600px;
   height: 50px;
+  background-color: rgba(47, 47, 47, 0.95);
   border-radius: 10px;
   display: flex;
   align-items: center;
   padding: 0 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  background-color: rgba(47, 47, 47, 0.95); /* add slight opacity */
+  box-sizing: border-box;
+  z-index: 2;
 }
 
 #search {
@@ -47,23 +48,25 @@ body {
 }
 
 .suggestions {
-  list-style: none;
+  margin: 0;
   padding: 0;
-  margin: 4px 0 0;
+  margin-top: 4px;
   width: 600px;
   background-color: #2f2f2f;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-  overflow: hidden;
-  max-height: 160px;
-  overflow-y: hidden; /* disable scrollbars unless you really want them */
+  overflow-y: auto;
   overflow-x: hidden;
+  max-height: 200px;
+  z-index: 1;
+  position: relative;
 }
 
 .suggestions li {
   padding: 10px 16px;
   color: #ccc;
   cursor: pointer;
+  list-style: none;
 }
 
 .suggestions li:hover,
