@@ -7,8 +7,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
-  position: relative;
 }
 
 .container {
@@ -22,19 +20,41 @@ body {
   padding: 0 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   box-sizing: border-box;
-  z-index: 2;
+}
 
-  transition: height 150ms ease;
+.input-wrapper {
+  position: relative;
+  flex: 1;
+  font-family: inherit;
+}
+
+#search,
+#ghost-suggestion {
+  width: 100%;
+  font-size: 18px;
+  font-family: inherit;
+  padding: 8px;
+  line-height: 1.2;
+  letter-spacing: 0.2px;
+  white-space: pre;
 }
 
 #search {
-  flex: 1;
   background: transparent;
   border: none;
   color: white;
-  font-size: 18px;
   outline: none;
-  padding: 8px;
+  position: relative;
+  z-index: 2;
+}
+
+#ghost-suggestion {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #777;
+  pointer-events: none;
+  z-index: 1;
 }
 
 .right-info {
@@ -47,41 +67,4 @@ body {
 
 .icon {
   font-size: 18px;
-}
-
-.suggestions {
-  margin: 0;
-  padding: 0;
-  margin-top: 4px;
-  width: 600px;
-  background-color: #2f2f2f;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-  overflow-y: auto;
-  overflow-x: hidden;
-  max-height: 200px;
-  z-index: 1;
-  position: relative;
-
-  transition: max-height 150ms ease, opacity 150ms ease;
-}
-
-/* Optional: fade out effect (can be controlled via class toggle) */
-.suggestions.hidden {
-  opacity: 0;
-  max-height: 0;
-  pointer-events: none;
-}
-
-.suggestions li {
-  padding: 10px 16px;
-  color: #ccc;
-  cursor: pointer;
-  list-style: none;
-}
-
-.suggestions li:hover,
-.suggestions li.selected {
-  background-color: #444;
-  color: white;
 }
