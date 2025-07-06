@@ -22,7 +22,11 @@
     const ghost = document.getElementById('ghost-suggestion');
     const clock = document.getElementById('clock');
 
-    const commands = ['yt', 'gh', 'wiki', 'g'];
+    let commands = [];
+
+    window.electronAPI.getCommands().then((cmds) => {
+      commands = cmds;
+    });
     let selectedIndex = -1;
 
     input.focus();

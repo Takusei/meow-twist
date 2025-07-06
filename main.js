@@ -2,12 +2,29 @@ import { app, globalShortcut, BrowserWindow, ipcMain } from 'electron';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import open from 'open';
+import fs from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 let win;
 
+const pluginFilePath = path.join(__dirname, 'plugins.json');
+let pluginMap = {};
+// Load plugin config at startup
+function loadPlugins() {
+  try {
+    const data = fs.readFileSync(pluginFilePath, 'utf-8');
+    pluginMap = JSON.parse(data);
+    console.log('Loaded plugins:', pluginMap);
+  } catch (err) {
+    console.error('Failed to load plugins.json:', err);
+  }
+}
+
 app.whenReady().then(() => {
+  loadPlugins(); // Load plugins at startup
+  ipcMain.handle('get-plugins', () => Object.keys(pluginMap));
+  
   win = new BrowserWindow({
     center: true,
     width: 600,
@@ -41,17 +58,13 @@ app.whenReady().then(() => {
 
   ipcMain.on('search', async (_, query) => {
     const [cmd, ...args] = query.trim().split(/\s+/);
-    const q = encodeURIComponent(args.join(' '));
+    const argStr = args.join(' ');
+    const template = pluginMap[cmd];
 
-    const routes = {
-      yt: `https://www.youtube.com/results?search_query=${q}`,
-      gh: `https://github.com/search?q=${q}`,
-      g: `https://www.google.com/search?q=${q}`,
-      wiki: `https://en.wikipedia.org/wiki/${q}`,
-      default: `https://www.google.com/search?q=${encodeURIComponent(query)}`
-    };
+    const url = template
+      ? template.replace('{{query}}', encodeURIComponent(argStr))
+      : `https://www.google.com/search?q=${encodeURIComponent(query)}`;
 
-    const url = routes[cmd] || routes.default;
     await open(url);
     win.hide();
   });
