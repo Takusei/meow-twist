@@ -14,24 +14,25 @@ app.whenReady().then(() => {
 
   win = new BrowserWindow({
     center: true,
-    width: 6000,
-    height: 600,
+    width: 600,
+    height: 60,
     frame: false,
     alwaysOnTop: true,
     transparent: true,
+    backgroundColor: '#00000000',
     skipTaskbar: true,
     resizable: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
-      contextIsolation: true,   // REQUIRED for contextBridge to work
-      nodeIntegration: false,   // Disable Node.js integration for security
-      enableRemoteModule: false // Optional but recommended
+      contextIsolation: true,
+      nodeIntegration: false,
+      enableRemoteModule: false
     }
   });
 
   win.loadFile('index.html');
   win.hide();
-  win.webContents.openDevTools();
+  // win.webContents.openDevTools();
 
   globalShortcut.register('Alt+Space', () => {
     if (win.isVisible()) {
