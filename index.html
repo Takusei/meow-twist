@@ -55,7 +55,7 @@
         highlightSelected(items);
       } else if (e.key === 'Enter') {
         const finalValue = selectedIndex >= 0
-          ? items[selectedIndex].textContent + ' ' + input.value.split(' ').slice(1).join(' ')
+          ? items[selectedIndex].textContent + ' ' + input.value.split(' ').slice(1).join(' ') 
           : input.value;
         window.electronAPI.search(finalValue.trim());
         input.value = '';

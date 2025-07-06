@@ -27,6 +27,7 @@ app.whenReady().then(() => {
   });
 
   win.loadFile('index.html');
+  // win.webContents.openDevTools();
 
   globalShortcut.register('Alt+Space', () => {
     if (win.isVisible()) {
@@ -59,12 +60,22 @@ app.whenReady().then(() => {
     if (win) win.hide();
   });
 
-  ipcMain.on('resize-window', (_, height) => {
+  ipcMain.on('resize-window', (_, newHeight) => {
+    console.log(`Resizing window to height: ${newHeight}`);
     if (win) {
       const bounds = win.getBounds();
-      win.setBounds({ x: bounds.x, y: bounds.y, width: 600, height });
+      if (bounds.height !== newHeight) {
+        win.setBounds({
+          x: bounds.x,
+          y: bounds.y, // keep Y position fixed
+          width: bounds.width,
+          height: newHeight
+        }, true);
+      }
     }
   });
+
+
 });
 
 app.on('will-quit', () => {
