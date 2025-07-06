@@ -1,29 +1,11 @@
-import path from 'path';
-import fs from 'fs';
-import { app, globalShortcut, BrowserWindow, ipcMain } from 'electron';
-import { fileURLToPath } from 'url';
+import { app, globalShortcut, ipcMain } from 'electron';
 import { openWindow, hideWindow, resizeWindow, setUpWindow } from './utils/window.js'; // Import the openWindow function
 import { search } from './utils/search.js'; // Import the search function
 import { setUpTray } from './utils/tray.js'; // Import the tray setup function
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const pluginFilePath = path.join(__dirname, 'plugins.json');
-let pluginMap = {};
-// Load plugin config at startup
-const loadPlugins = ()=> {
-  try {
-    const data = fs.readFileSync(pluginFilePath, 'utf-8');
-    pluginMap = JSON.parse(data);
-    console.log('Loaded plugins:', pluginMap);
-  } catch (err) {
-    console.error('Failed to load plugins.json:', err);
-  }
-}
+import { loadPlugins } from './utils/plugin.js'; // Import the plugin loading function
 
 app.whenReady().then(() => {
-  loadPlugins(); // Load plugins at startup
+  const pluginMap = loadPlugins(); // Load plugins at startup
   ipcMain.handle('get-plugins', () => Object.keys(pluginMap));
   
   const win = setUpWindow();
