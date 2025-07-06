@@ -77,6 +77,20 @@
       ghost.textContent = '';
       selectedIndex = -1;
     });
+
+    // If window or input loses focus, hide the search bar
+    window.addEventListener('blur', () => {
+      window.electronAPI.hideWindow();
+    });
+
+    input.addEventListener('blur', () => {
+      // Extra safety: hide when clicking outside input
+      setTimeout(() => {
+        if (document.activeElement !== input) {
+          window.electronAPI.hideWindow();
+        }
+      }, 100); // small delay to allow click events to complete
+    });
   </script>
 </body>
 </html>
