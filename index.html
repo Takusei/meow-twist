@@ -65,7 +65,13 @@
     input.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         const finalValue = input.value.trim();
-        window.electronAPI.search(finalValue);
+        
+        if (!finalValue) {
+          window.electronAPI.hideWindow();
+        } else {
+          window.electronAPI.search(finalValue);
+        }
+
         input.value = '';
         ghost.textContent = '';
         selectedIndex = -1;
