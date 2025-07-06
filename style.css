@@ -1,0 +1,19 @@
+body {
+  margin: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+input {
+  width: 90%;
+  padding: 10px;
+  font-size: 22px;
+  background-color: #222;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  outline: none;
+}

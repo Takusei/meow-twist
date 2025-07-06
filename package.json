@@ -1,0 +1,14 @@
+{
+  "name": "spotlight-launcher",
+  "version": "1.0.0",
+  "description": "A minimal Spotlight-like launcher built with Electron",
+  "type": "module",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "dependencies": {
+    "electron": "^29.0.0",
+    "open": "^9.0.0"
+  }
+}
