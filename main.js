@@ -43,7 +43,20 @@ app.whenReady().then(() => {
 
   ipcMain.on('search', async (_, query) => {
     console.log('Search received in main:', query);
-    const url = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+
+    const [cmd, ...args] = query.trim().split(/\s+/);
+    const q = encodeURIComponent(args.join(' '));
+
+    const routes = {
+      yt: `https://www.youtube.com/results?search_query=${q}`,
+      gh: `https://github.com/search?q=${q}`,
+      g: `https://www.google.com/search?q=${q}`,
+      wiki: `https://en.wikipedia.org/wiki/${q}`,
+      // fallback if only one word
+      default: `https://www.google.com/search?q=${encodeURIComponent(query)}`
+    };
+
+    const url = routes[cmd] || routes.default;
     await open(url);
     win.hide();
   });
