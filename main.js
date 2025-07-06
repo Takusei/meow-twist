@@ -5,14 +5,17 @@ import open from 'open';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
+console.log('Current directory:', __dirname);
 let win;
 
 app.whenReady().then(() => {
+  console.log('App is ready, creating window...');
+  console.log('Preload script path:', path.join(__dirname, 'preload.js'));
+
   win = new BrowserWindow({
     center: true,
-    width: 600,
-    height: 60,
+    width: 6000,
+    height: 600,
     frame: false,
     alwaysOnTop: true,
     transparent: true,
@@ -20,13 +23,15 @@ app.whenReady().then(() => {
     resizable: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
-      contextIsolation: true,
-      nodeIntegration: false,
+      contextIsolation: true,   // REQUIRED for contextBridge to work
+      nodeIntegration: false,   // Disable Node.js integration for security
+      enableRemoteModule: false // Optional but recommended
     }
   });
 
   win.loadFile('index.html');
   win.hide();
+  win.webContents.openDevTools();
 
   globalShortcut.register('Ctrl+Alt+S', () => {
     if (win.isVisible()) {
