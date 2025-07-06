@@ -131,7 +131,7 @@ app.whenReady().then(() => {
     }
   ]);
 
-  tray.setToolTip('Spotlight Launcher');
+  tray.setToolTip('Win Search');
   tray.setContextMenu(contextMenu);
 });
 
