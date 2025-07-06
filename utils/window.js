@@ -24,7 +24,7 @@ export const setUpWindow = () => {
     }
   });
   
-  win.loadFile(path.join(__dirname, '..' ,'index.html'));
+  win.loadFile(path.join(__dirname, '..', 'assets', 'index.html'));
   return win;
 }
 

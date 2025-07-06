@@ -1,8 +1,8 @@
 import { app, globalShortcut, ipcMain } from 'electron';
-import { openWindow, hideWindow, resizeWindow, setUpWindow } from './utils/window.js'; // Import the openWindow function
-import { search } from './utils/search.js'; // Import the search function
-import { setUpTray } from './utils/tray.js'; // Import the tray setup function
-import { loadPlugins } from './utils/plugin.js'; // Import the plugin loading function
+import { openWindow, hideWindow, resizeWindow, setUpWindow } from './utils/window.js';
+import { search } from './utils/search.js'; 
+import { setUpTray } from './utils/tray.js'; 
+import { loadPlugins } from './utils/plugin.js'; 
 
 app.whenReady().then(() => {
   const pluginMap = loadPlugins(); // Load plugins at startup
