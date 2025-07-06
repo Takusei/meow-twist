@@ -33,7 +33,7 @@ app.whenReady().then(() => {
   win.hide();
   win.webContents.openDevTools();
 
-  globalShortcut.register('Ctrl+Alt+S', () => {
+  globalShortcut.register('Alt+Space', () => {
     if (win.isVisible()) {
       win.hide();
     } else {

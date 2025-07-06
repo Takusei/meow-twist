@@ -1,19 +1,42 @@
 body {
   margin: 0;
-  background: rgba(0, 0, 0, 0.85);
+  background: transparent;
+  font-family: sans-serif;
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100vh;
 }
 
-input {
-  width: 90%;
-  padding: 10px;
-  font-size: 22px;
-  background-color: #222;
-  color: #fff;
+.container {
+  background-color: #2f2f2f;
+  width: 600px;
+  height: 50px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+#search {
+  flex: 1;
+  background: transparent;
   border: none;
-  border-radius: 6px;
+  color: white;
+  font-size: 18px;
   outline: none;
+  padding: 8px;
+}
+
+.right-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #ccc;
+  font-size: 16px;
+}
+
+.icon {
+  font-size: 18px;
 }

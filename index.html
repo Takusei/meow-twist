@@ -6,29 +6,46 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <input id="search" placeholder="Type something..." autofocus />
+  <div class="container">
+    <input id="search" placeholder="Search..." />
+    <div class="right-info">
+      <span id="clock">--:-- --</span>
+      <span class="icon">🔍</span>
+    </div>
+  </div>
+
   <script>
     const input = document.getElementById('search');
+    input.focus();
 
-    input.addEventListener('input', () => {
-      console.log('Input changed:', input.value);
-    });
-
+    // Handle Enter
     input.addEventListener('keydown', (e) => {
-      console.log('Key pressed:', e.key);
       if (e.key === 'Enter') {
         window.electronAPI.search(input.value);
-        console.log('Enter pressed, sending:', input.value);
         input.value = '';
       }
     });
 
+    // Escape to close
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
-        // Send IPC to main process to hide window
         window.electronAPI.hideWindow();
       }
     });
+
+    // Clock updater
+    const clock = document.getElementById('clock');
+    const updateClock = () => {
+      const now = new Date();
+      let hours = now.getHours();
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12;
+      hours = hours ? hours : 12;
+      clock.textContent = `${hours}:${minutes} ${ampm}`;
+    };
+    setInterval(updateClock, 1000);
+    updateClock();
   </script>
 </body>
 </html>
