@@ -1,5 +1,6 @@
 {
-  "name": "spotlight-launcher",
+  "name": "win-search",
+  "author": "Jaycen",
   "version": "1.0.0",
   "description": "A minimal Spotlight-like launcher built with Electron",
   "type": "module",
