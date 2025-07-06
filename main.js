@@ -1,14 +1,13 @@
 import path from 'path';
 import fs from 'fs';
 import { app, globalShortcut, BrowserWindow, ipcMain, Tray, Menu } from 'electron';
-
 import { fileURLToPath } from 'url';
 import { openWindow, hideWindow, resizeWindow } from './utils/window.js'; // Import the openWindow function
 import { search } from './utils/search.js'; // Import the search function
+import { setUpTray } from './utils/tray.js'; // Import the tray setup function
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-let win;
 
 const pluginFilePath = path.join(__dirname, 'plugins.json');
 let pluginMap = {};
@@ -27,7 +26,7 @@ app.whenReady().then(() => {
   loadPlugins(); // Load plugins at startup
   ipcMain.handle('get-plugins', () => Object.keys(pluginMap));
   
-  win = new BrowserWindow({
+  const win = new BrowserWindow({
     center: true,
     width: 600,
     height: 60,
@@ -69,26 +68,7 @@ app.whenReady().then(() => {
   });
 
   // Create a tray icon
-  let tray;
-
-  tray = new Tray(path.join(__dirname, 'assets', 'icon.png')); // use your icon path
-  const contextMenu = Menu.buildFromTemplate([
-    {
-      label: 'Toggle Search (Alt+Space)',
-      click: () => {
-        openWindow(win);
-      }
-    },
-    {
-      label: 'Quit',
-      click: () => {
-        app.quit();
-      }
-    }
-  ]);
-
-  tray.setToolTip('Win Search');
-  tray.setContextMenu(contextMenu);
+  setUpTray(win);
 });
 
 app.on('will-quit', () => {
