@@ -44,16 +44,22 @@
 
     input.addEventListener('input', () => {
       const rawText = input.value;
-      const keyword = rawText.trim().split(/\s+/)[0].toLowerCase();
+      const parts = rawText.split(/\s+/); // 🔥 no trim here
+      const keyword = parts[0].toLowerCase();
+
+      // If user typed space, or input is empty → clear ghost
+      if (!rawText || rawText.endsWith(' ')) {
+        ghost.textContent = '';
+        return;
+      }
+
       const match = commands.find(cmd => cmd.startsWith(keyword));
 
-    if (!rawText.trim()) {
-      ghost.textContent = '';
-    } else if (match && keyword !== match) {
-      ghost.textContent = rawText + match.slice(keyword.length);
-    } else {
-      ghost.textContent = '';
-    }
+      if (match && keyword !== match) {
+        ghost.textContent = rawText + match.slice(keyword.length);
+      } else {
+        ghost.textContent = '';
+      }
     });
 
     input.addEventListener('keydown', (e) => {
