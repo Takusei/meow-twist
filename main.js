@@ -1,8 +1,8 @@
 import path from 'path';
 import fs from 'fs';
-import { app, globalShortcut, BrowserWindow, ipcMain, Tray, Menu } from 'electron';
+import { app, globalShortcut, BrowserWindow, ipcMain } from 'electron';
 import { fileURLToPath } from 'url';
-import { openWindow, hideWindow, resizeWindow } from './utils/window.js'; // Import the openWindow function
+import { openWindow, hideWindow, resizeWindow, setUpWindow } from './utils/window.js'; // Import the openWindow function
 import { search } from './utils/search.js'; // Import the search function
 import { setUpTray } from './utils/tray.js'; // Import the tray setup function
 
@@ -26,25 +26,7 @@ app.whenReady().then(() => {
   loadPlugins(); // Load plugins at startup
   ipcMain.handle('get-plugins', () => Object.keys(pluginMap));
   
-  const win = new BrowserWindow({
-    center: true,
-    width: 600,
-    height: 60,
-    frame: false,
-    alwaysOnTop: true,
-    transparent: true,
-    backgroundColor: '#00000000',
-    skipTaskbar: true,
-    resizable: false,
-    webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
-      contextIsolation: true,
-      nodeIntegration: false,
-      enableRemoteModule: false
-    }
-  });
-
-  win.loadFile('index.html');
+  const win = setUpWindow();
   // win.webContents.openDevTools();
 
   globalShortcut.register('Alt+Space', () => {
