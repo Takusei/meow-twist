@@ -34,6 +34,7 @@ app.whenReady().then(() => {
     } else {
       win.show();
       win.focus();
+      win.webContents.send('reset');  // 💡 send reset signal to renderer
     }
   });
 
