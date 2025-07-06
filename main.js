@@ -1,4 +1,5 @@
 import { app, globalShortcut, BrowserWindow, ipcMain } from 'electron';
+import { Tray, Menu, nativeImage } from 'electron';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import open from 'open';
@@ -9,9 +10,6 @@ console.log('Current directory:', __dirname);
 let win;
 
 app.whenReady().then(() => {
-  console.log('App is ready, creating window...');
-  console.log('Preload script path:', path.join(__dirname, 'preload.js'));
-
   win = new BrowserWindow({
     center: true,
     width: 600,
@@ -56,6 +54,21 @@ app.whenReady().then(() => {
   }
 });
 
+});
+
+app.whenReady().then(() => {
+  // Load icon (must be .ico or .png)
+  const iconPath = path.join(__dirname, 'icon.png');
+  const trayIcon = nativeImage.createFromPath(iconPath);
+  tray = new Tray(trayIcon);
+
+  const contextMenu = Menu.buildFromTemplate([
+    { label: 'Show Search', click: () => win.show() },
+    { label: 'Quit', click: () => app.quit() }
+  ]);
+
+  tray.setToolTip('Spotlight Launcher');
+  tray.setContextMenu(contextMenu);
 });
 
 app.on('will-quit', () => {
