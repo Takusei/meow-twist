@@ -1,15 +1,19 @@
 body {
   margin: 0;
+  overflow: hidden;
   background: transparent;
   font-family: sans-serif;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   height: 100vh;
+  padding-top: 100px;
 }
 
 .container {
   background-color: #2f2f2f;
+  overflow: hidden;
   width: 600px;
   height: 50px;
   border-radius: 10px;
@@ -17,6 +21,7 @@ body {
   align-items: center;
   padding: 0 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  background-color: rgba(47, 47, 47, 0.95); /* add slight opacity */
 }
 
 #search {
@@ -39,4 +44,30 @@ body {
 
 .icon {
   font-size: 18px;
+}
+
+.suggestions {
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 0;
+  width: 600px;
+  background-color: #2f2f2f;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  max-height: 160px;
+  overflow-y: hidden; /* disable scrollbars unless you really want them */
+  overflow-x: hidden;
+}
+
+.suggestions li {
+  padding: 10px 16px;
+  color: #ccc;
+  cursor: pointer;
+}
+
+.suggestions li:hover,
+.suggestions li.selected {
+  background-color: #444;
+  color: white;
 }
