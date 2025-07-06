@@ -1,4 +1,4 @@
-import { app, globalShortcut, BrowserWindow, ipcMain } from 'electron';
+import { app, globalShortcut, BrowserWindow, ipcMain, Tray, Menu } from 'electron';
 import { exec } from 'child_process';
 import { fileURLToPath } from 'url';
 import path from 'path';
@@ -20,6 +20,16 @@ function loadPlugins() {
     console.log('Loaded plugins:', pluginMap);
   } catch (err) {
     console.error('Failed to load plugins.json:', err);
+  }
+}
+
+const openWindow = (win) => {
+  if (win.isVisible()) {
+    win.hide();
+  } else {
+    win.show();
+    win.focus();
+    win.webContents.send('reset');  // 💡 send reset signal to renderer
   }
 }
 
@@ -49,13 +59,7 @@ app.whenReady().then(() => {
   // win.webContents.openDevTools();
 
   globalShortcut.register('Alt+Space', () => {
-    if (win.isVisible()) {
-      win.hide();
-    } else {
-      win.show();
-      win.focus();
-      win.webContents.send('reset');  // 💡 send reset signal to renderer
-    }
+    openWindow(win);
   });
 
   ipcMain.on('search', async (_, query) => {
@@ -108,7 +112,27 @@ app.whenReady().then(() => {
     }
   });
 
+  // Create a tray icon
+  let tray;
 
+  tray = new Tray(path.join(__dirname, 'assets', 'icon.png')); // use your icon path
+  const contextMenu = Menu.buildFromTemplate([
+    {
+      label: 'Toggle Search (Alt+Space)',
+      click: () => {
+        openWindow(win);
+      }
+    },
+    {
+      label: 'Quit',
+      click: () => {
+        app.quit();
+      }
+    }
+  ]);
+
+  tray.setToolTip('Spotlight Launcher');
+  tray.setContextMenu(contextMenu);
 });
 
 app.on('will-quit', () => {
