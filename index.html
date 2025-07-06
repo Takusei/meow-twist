@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Spotlight Launcher</title>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -9,10 +9,24 @@
   <input id="search" placeholder="Type something..." autofocus />
   <script>
     const input = document.getElementById('search');
+
+    input.addEventListener('input', () => {
+      console.log('Input changed:', input.value);
+    });
+
     input.addEventListener('keydown', (e) => {
+      console.log('Key pressed:', e.key);
       if (e.key === 'Enter') {
         window.electronAPI.search(input.value);
+        console.log('Enter pressed, sending:', input.value);
         input.value = '';
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        // Send IPC to main process to hide window
+        window.electronAPI.hideWindow();
       }
     });
   </script>
