@@ -27,6 +27,7 @@ npm install
 ```bash
 npm start
 ```
+Or just double click `launch.vbs`.
 
 ## Usage
 
