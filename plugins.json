@@ -13,5 +13,20 @@
     "exec": "notepad",
     "description": "Open Notepad",
     "icon": "notepad.png"
+  },
+  "edge": {
+    "exec": "start msedge",
+    "description": "Open Microsoft Edge",
+    "icon": "edge.png"
+  },
+  "chrome": {
+    "exec": "start chrome",
+    "description": "Open Google Chrome",
+    "icon": "chrome.png"
+  },
+  "powershell": {
+    "exec": "start powershell",
+    "description": "Open PowerShell",
+    "icon": "powershell.png"
   }
 }
