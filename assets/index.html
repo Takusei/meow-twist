@@ -48,10 +48,17 @@
 
     input.addEventListener('input', () => {
       const rawText = input.value.trim();
+
+      if (!rawText) {
+        ghost.textContent = '';
+        renderSuggestions([]);
+        return;
+      }
+
       const words = rawText.split(/\s+/);
       const keyword = words[0].toLowerCase();
 
-      // Update ghost suggestion
+      // Ghost suggestion only when typing the command (no space yet)
       const match = commands.find(cmd => cmd.command.startsWith(keyword));
       if (match && keyword !== match.command && words.length === 1) {
         ghost.textContent = rawText + match.command.slice(keyword.length);
@@ -59,13 +66,15 @@
         ghost.textContent = '';
       }
 
-      // Always show dropdown suggestions based on first word
-      const matches = commands
-        .filter(cmd => cmd.command.startsWith(keyword))
-        .slice(0, 2);
+      // Suggestions only based on keyword
+      const matches =
+        keyword.length > 0
+          ? commands.filter(cmd => cmd.command.startsWith(keyword)).slice(0, 2)
+          : [];
 
       renderSuggestions(matches);
     });
+
 
     input.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
