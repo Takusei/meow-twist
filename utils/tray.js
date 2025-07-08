@@ -23,6 +23,6 @@ export const setUpTray = (win) => {
     }
   ]);
 
-  tray.setToolTip('Win Search');
+  tray.setToolTip('Meow Twist');
   tray.setContextMenu(contextMenu);
 }
