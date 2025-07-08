@@ -133,16 +133,24 @@
       }
     });
 
-    function updateSelection(items) {
+    const updateSelection = (items) => {
       items.forEach((item, index) => {
         if (index === selectedIndex) {
           item.classList.add('selected');
-          input.value = item.querySelector('.suggestion-title').textContent + ' ';
+
+          const command = item.querySelector('.suggestion-title').textContent.trim();
+          const currentInput = input.value.trim();
+          const words = currentInput.split(/\s+/);
+          if (command !== 'google') {
+            words[0] = command; // replace only the command part
+            input.value = words.join(' ') + ' ';
+        }
         } else {
           item.classList.remove('selected');
         }
       });
-    }
+    };
+
 
     const renderSuggestions = (matches) => {
       const limited = matches.slice(0, 2);
