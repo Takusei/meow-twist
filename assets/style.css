@@ -134,3 +134,7 @@ body {
   border-radius: 10px 10px 0 0;
   box-shadow: none; /* Optional: remove duplicate shadow from dropdown */
 }
+
+.suggestion-item.selected {
+  background: #3e3e3e;
+}

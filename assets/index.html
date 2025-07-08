@@ -115,9 +115,34 @@
           input.value = words.join(' ') + ' ';
           ghost.textContent = '';
         }
+      } else if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        const items = document.querySelectorAll('.suggestion-item');
+        if (items.length === 0) return;
+
+        selectedIndex = (selectedIndex + 1) % items.length;
+        updateSelection(items);
+      }
+      else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        const items = document.querySelectorAll('.suggestion-item');
+        if (items.length === 0) return;
+
+        selectedIndex = (selectedIndex - 1 + items.length) % items.length;
+        updateSelection(items);
       }
     });
 
+    function updateSelection(items) {
+      items.forEach((item, index) => {
+        if (index === selectedIndex) {
+          item.classList.add('selected');
+          input.value = item.querySelector('.suggestion-title').textContent + ' ';
+        } else {
+          item.classList.remove('selected');
+        }
+      });
+    }
 
     const renderSuggestions = (matches) => {
       const limited = matches.slice(0, 2);
