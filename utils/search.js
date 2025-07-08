@@ -14,7 +14,7 @@ import { hideWindow } from './window.js';
 export const search = async (query, pluginMap, win) => {
   const [cmd, ...args] = query.trim().split(/\s+/);
   const q = args.join(' ');
-  const plugin = pluginMap[cmd];
+  const plugin = pluginMap[cmd] || pluginMap[cmd.toLowerCase()] || pluginMap[cmd.toUpperCase()];
 
   if (!plugin) {
     // Fallback to Google

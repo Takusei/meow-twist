@@ -55,7 +55,7 @@
       if (!keyword || hasSpace) {
         ghost.textContent = '';
       } else {
-        const match = commands.find(cmd => cmd.command.startsWith(keyword));
+        const match = commands.find(cmd => cmd.command.toLowerCase().startsWith(keyword));
         ghost.textContent = match && keyword !== match.command
           ? rawText + match.command.slice(keyword.length)
           : '';
@@ -65,12 +65,12 @@
       let matches = [];
 
       // ✅ Always check if keyword is a known command
-      const exactMatch = commands.find(cmd => cmd.command === keyword);
+      const exactMatch = commands.find(cmd => cmd.command.toLowerCase() === keyword);
       if (exactMatch) {
         matches = [exactMatch];
       } else if (!hasSpace && keyword) {
         matches = commands.filter(cmd =>
-          cmd.command.startsWith(keyword)
+          cmd.command.toLowerCase().startsWith(keyword)
         ).slice(0, 2);
       }
 
