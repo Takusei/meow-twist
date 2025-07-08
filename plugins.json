@@ -28,5 +28,10 @@
     "exec": "start powershell",
     "description": "Open PowerShell",
     "icon": "powershell.png"
+  },
+  "explorer": {
+    "exec": "explorer",
+    "description": "Open File Explorer",
+    "icon": "explorer.png"
   }
 }
