@@ -13,7 +13,7 @@ export const loadPlugins = () => {
   try {
     const data = fs.readFileSync(pluginFilePath, 'utf-8');
     pluginMap = JSON.parse(data);
-    console.log('Loaded plugins:', pluginMap);
+    console.log('Plugins loaded successfully! Enjoy your search experience!');
   } catch (err) {
     console.error('Failed to load plugins.json:', err);
   }
