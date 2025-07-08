@@ -91,7 +91,24 @@
 
     input.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
-        const finalValue = input.value.trim();
+        let finalValue = input.value.trim();
+
+        // If a suggestion is selected, override finalValue with that command
+        if (selectedIndex >= 0) {
+          const items = document.querySelectorAll('.suggestion-item');
+          const selectedItem = items[selectedIndex];
+          if (selectedItem) {
+            const selectedCommand = selectedItem.querySelector('.suggestion-title')?.textContent.trim();
+            if (selectedCommand && selectedCommand !== 'google') {
+              // Replace just the first word (the command), preserve the rest
+              const words = input.value.trim().split(/\s+/);
+              words[0] = selectedCommand;
+              finalValue = words.join(' ');
+            } else if (selectedCommand === 'google') {
+              finalValue = input.value.trim(); // fallback — use full input as-is
+            }
+          }
+        }
 
         // Reset everything BEFORE triggering actions
         input.value = '';
@@ -135,19 +152,7 @@
 
     const updateSelection = (items) => {
       items.forEach((item, index) => {
-        if (index === selectedIndex) {
-          item.classList.add('selected');
-
-          const command = item.querySelector('.suggestion-title').textContent.trim();
-          const currentInput = input.value.trim();
-          const words = currentInput.split(/\s+/);
-          if (command !== 'google') {
-            words[0] = command; // replace only the command part
-            input.value = words.join(' ') + ' ';
-        }
-        } else {
-          item.classList.remove('selected');
-        }
+        item.classList.toggle('selected', index === selectedIndex);
       });
     };
 
@@ -179,11 +184,16 @@
         const totalHeight = baseHeight + limited.length * itemHeight;
         window.electronAPI.resizeWindow(totalHeight);
 
+        // 🔽 Automatically select the first item
+        selectedIndex = 0;
+        updateSelection(document.querySelectorAll('.suggestion-item'));
+
       } else {
         container.classList.remove('with-suggestions');
         container.classList.add('rounded');
 
-        window.electronAPI.resizeWindow(baseHeight); // 👈 always force reset
+        selectedIndex = -1;
+        window.electronAPI.resizeWindow(baseHeight);
       }
     };
 
