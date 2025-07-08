@@ -28,6 +28,7 @@ export const setUpWindow = () => {
   });
   
   win.loadFile(path.join(__dirname, '..', 'assets', 'index.html'));
+  // win.webContents.openDevTools({ mode: 'detach' });
   return win;
 }
 

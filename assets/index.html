@@ -68,7 +68,7 @@
       const exactMatch = commands.find(cmd => cmd.command === keyword);
       if (exactMatch) {
         matches = [exactMatch];
-      } else if (!hasSpace) {
+      } else if (!hasSpace && keyword) {
         matches = commands.filter(cmd =>
           cmd.command.startsWith(keyword)
         ).slice(0, 2);
