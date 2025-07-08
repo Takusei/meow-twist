@@ -5,11 +5,14 @@ import { BrowserWindow, screen } from 'electron';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const BASE_HEIGHT = 60;
+const WINDOW_WIDTH = 600;
+
 export const setUpWindow = () => {
   const win = new BrowserWindow({
     center: true,
-    width: 600,
-    height: 60,
+    width: WINDOW_WIDTH,
+    height: BASE_HEIGHT,
     frame: false,
     alwaysOnTop: true,
     transparent: true,
@@ -36,22 +39,19 @@ export const openWindow = (win) => {
     const display = screen.getDisplayNearestPoint(mousePoint);
     const { x, y, width, height } = display.workArea;
 
-    const windowWidth = 600;
-    const windowHeight = win.getBounds().height;
-
-    const centerX = x + Math.round((width - windowWidth) / 2);
-    const centerY = y + Math.round((height - windowHeight) / 2);
+    const centerX = x + Math.round((width - WINDOW_WIDTH) / 2);
+    const centerY = y + Math.round((height - BASE_HEIGHT) / 2); // 🔧 use BASE_HEIGHT here
 
     win.setBounds({
       x: centerX,
       y: centerY,
-      width: windowWidth,
-      height: windowHeight
+      width: WINDOW_WIDTH,
+      height: BASE_HEIGHT // 🔧 force consistent height
     });
 
     win.show();
     win.focus();
-    win.webContents.send('reset');
+    win.webContents.send('reset'); // 🔄 resets input + suggestions
   }
 }
 
