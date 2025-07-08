@@ -11,7 +11,7 @@ app.whenReady().then(() => {
   const win = setUpWindow();
   // win.webContents.openDevTools();
 
-  globalShortcut.register('Alt+Space', () => {
+  globalShortcut.register('Ctrl+Space', () => {
     openWindow(win);
   });
 
