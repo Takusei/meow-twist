@@ -38,5 +38,15 @@
     "exec": "start outlook",
     "description": "Open Microsoft Outlook",
     "icon": "outlook.png"
+  },
+  "youtube": {
+    "url": "https://www.youtube.com",
+    "description": "Open YouTube",
+    "icon": "link.png"
+  },
+  "youtube-edge": {
+    "exec": "start msedge https://www.youtube.com",
+    "description": "Open YouTube in Edge",
+    "icon": "link.png"
   }
 }
