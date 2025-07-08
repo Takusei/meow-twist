@@ -2,6 +2,15 @@ import open from 'open';
 import { exec } from 'child_process';
 import { hideWindow } from './window.js';
 
+
+/**
+ * Searches for a query using the specified plugin or falls back to Google search.
+ * @param {string} query - The search query.
+ * @param {Object} pluginMap - A map of command names to plugin configurations, for example, [{command: 'gh', url: '', ...}, {command: 'code', exec: 'code', ...}].
+ * @param {BrowserWindow} win - The Electron BrowserWindow instance.
+ * @returns {Promise<void>}
+ *//*
+ */
 export const search = async (query, pluginMap, win) => {
   const [cmd, ...args] = query.trim().split(/\s+/);
   const q = args.join(' ');

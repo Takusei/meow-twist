@@ -8,5 +8,10 @@
     "exec": "code",
     "description": "Open VS Code",
     "icon": "vscode.png"
+  },
+  "notepad": {
+    "exec": "notepad",
+    "description": "Open Notepad",
+    "icon": "notepad.png"
   }
 }
