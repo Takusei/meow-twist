@@ -76,7 +76,7 @@
       // 🔸 If no matches and user typed something, show fallback Google suggestion
       if (matches.length === 0 && rawText) {
         matches = [{
-          command: 'g',
+          command: 'google',
           description: `Search Google for "${rawText}"`,
           icon: 'google.png',
           isFallback: true
@@ -85,7 +85,6 @@
 
       renderSuggestions(matches);
     });
-
 
     input.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
