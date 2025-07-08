@@ -60,7 +60,6 @@ export const hideWindow = (win) => {
 }
 
 export const resizeWindow = (win, newHeight) => {
-  console.log(`Resizing window to height: ${newHeight}`);
   if (win) {
     const [x, y] = win.getPosition();
     const [width] = win.getSize();
