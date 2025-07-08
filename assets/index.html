@@ -49,28 +49,39 @@
     input.addEventListener('input', () => {
       const rawText = input.value.trim();
 
-      if (!rawText) {
+      const hasSpace = rawText.includes(' ');
+      const keyword = rawText.split(/\s+/)[0].toLowerCase();
+
+      // 🔸 Determine ghost suggestion (only when single word and match exists)
+      if (!keyword || hasSpace) {
         ghost.textContent = '';
-        renderSuggestions([]);
-        return;
-      }
-
-      const words = rawText.split(/\s+/);
-      const keyword = words[0].toLowerCase();
-
-      // Ghost suggestion only when typing the command (no space yet)
-      const match = commands.find(cmd => cmd.command.startsWith(keyword));
-      if (match && keyword !== match.command && words.length === 1) {
-        ghost.textContent = rawText + match.command.slice(keyword.length);
       } else {
-        ghost.textContent = '';
+        const match = commands.find(cmd => cmd.command.startsWith(keyword));
+        ghost.textContent = match && keyword !== match.command
+          ? rawText + match.command.slice(keyword.length)
+          : '';
       }
 
-      // Suggestions only based on keyword
-      const matches =
-        keyword.length > 0
-          ? commands.filter(cmd => cmd.command.startsWith(keyword)).slice(0, 2)
-          : [];
+      // 🔸 Determine matches
+      let matches = [];
+
+      if (!rawText) {
+        matches = [];
+      } else if (!hasSpace) {
+        matches = commands.filter(cmd =>
+          cmd.command.startsWith(keyword)
+        ).slice(0, 2);
+      }
+
+      // 🔸 If no matches and user typed something, show fallback Google suggestion
+      if (matches.length === 0 && rawText) {
+        matches = [{
+          command: 'g',
+          description: `Search Google for "${rawText}"`,
+          icon: 'google.png',
+          isFallback: true
+        }];
+      }
 
       renderSuggestions(matches);
     });
@@ -110,7 +121,7 @@
       suggestionsList.innerHTML = '';
 
       if (limited.length > 0) {
-        suggestionsList.innerHTML = limited.map((cmd, idx) => `
+        suggestionsList.innerHTML = matches.map((cmd, idx) => `
           <li class="suggestion-item" data-index="${idx}">
             <div class="suggestion-left">
               <img src="${cmd.icon || 'google.png'}" alt="icon">
