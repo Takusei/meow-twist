@@ -152,9 +152,35 @@
 
     const updateSelection = (items) => {
       items.forEach((item, index) => {
-        item.classList.toggle('selected', index === selectedIndex);
+        const isSelected = index === selectedIndex;
+        item.classList.toggle('selected', isSelected);
+
+        if (isSelected) {
+          const selectedCommand = item.querySelector('.suggestion-title')?.textContent.trim();
+          const currentInput = input.value.trim();
+          const words = currentInput.split(/\s+/);
+
+          // Show ghost only if single-word input and selected is NOT google
+          if (
+            words.length === 1 &&
+            selectedCommand &&
+            selectedCommand.toLowerCase() !== 'google' &&
+            selectedCommand.toLowerCase().startsWith(words[0].toLowerCase()) &&
+            selectedCommand.toLowerCase() !== words[0].toLowerCase()
+          ) {
+            ghost.textContent = words[0] + selectedCommand.slice(words[0].length);
+          } else {
+            ghost.textContent = '';
+          }
+        }
       });
+
+      // Clear ghost if nothing is selected
+      if (selectedIndex === -1) {
+        ghost.textContent = '';
+      }
     };
+
 
 
     const renderSuggestions = (matches) => {
