@@ -137,4 +137,16 @@ body {
 
 .suggestion-item.selected {
   background: #3e3e3e;
+  position: relative;
+}
+
+.suggestion-item.selected::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 6px;
+  bottom: 6px;
+  width: 4px;
+  border-radius: 2px;
+  background-color: #4fc3f7; 
 }
