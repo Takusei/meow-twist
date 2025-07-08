@@ -1,4 +1,4 @@
-# Win Search
+# Meow Twist — A smart command launcher for when you’re too busy to click.
 
 A minimal Electron-based smart launcher featuring command suggestions, ghost autocomplete, and Google search fallback.
 
