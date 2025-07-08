@@ -62,14 +62,8 @@ export const hideWindow = (win) => {
 export const resizeWindow = (win, newHeight) => {
   console.log(`Resizing window to height: ${newHeight}`);
   if (win) {
-    const bounds = win.getBounds();
-    if (bounds.height !== newHeight) {
-      win.setBounds({
-        x: bounds.x,
-        y: bounds.y, // keep Y position fixed
-        width: bounds.width,
-        height: newHeight
-      }, true);
-    }
+    const [x, y] = win.getPosition();
+    const [width] = win.getSize();
+    win.setBounds({ x, y, width, height: newHeight });
   }
 }

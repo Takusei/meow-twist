@@ -1,9 +1,12 @@
 {
-  "gh": "https://github.com/search?q={{query}}",
-  "yt": "https://www.youtube.com/results?search_query={{query}}",
-  "g": "https://www.google.com/search?q={{query}}",
-  "wiki": "https://en.wikipedia.org/wiki/{{query}}",
+  "gh": {
+    "url": "https://github.com/search?q={{query}}",
+    "description": "Search GitHub",
+    "icon": "github.png"
+  },
   "code": {
-    "exec": "code"
+    "exec": "code",
+    "description": "Open VS Code",
+    "icon": "vscode.png"
   }
 }

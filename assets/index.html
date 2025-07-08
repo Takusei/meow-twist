@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
-  <div class="container">
+  <div class="container rounded">
     <div class="input-wrapper">
       <input id="search" placeholder="Search..." autocomplete="off" />
       <div id="ghost-suggestion" class="ghost"></div>
@@ -17,18 +17,22 @@
     </div>
   </div>
 
+  <!-- 🔽 Dropdown list below the search bar -->
+  <ul id="suggestions" class="suggestions-list"></ul>
+
   <script>
     const input = document.getElementById('search');
     const ghost = document.getElementById('ghost-suggestion');
     const clock = document.getElementById('clock');
+    const suggestionsList = document.getElementById('suggestions');
 
     let commands = [];
 
     window.electronAPI.getCommands().then((cmds) => {
       commands = cmds;
     });
-    let selectedIndex = -1;
 
+    let selectedIndex = -1;
     input.focus();
 
     const updateClock = () => {
@@ -45,27 +49,32 @@
     input.addEventListener('input', () => {
       const rawText = input.value;
 
-      // 🧠 if input is empty or contains a space anywhere → don't show ghost
       if (!rawText || rawText.includes(' ')) {
         ghost.textContent = '';
+        renderSuggestions([]);
         return;
       }
 
       const keyword = rawText.toLowerCase();
-      const match = commands.find(cmd => cmd.startsWith(keyword));
 
-      if (match && keyword !== match) {
-        ghost.textContent = rawText + match.slice(keyword.length);
+      const match = commands.find(cmd => cmd.command.startsWith(keyword));
+      if (match && keyword !== match.command) {
+        ghost.textContent = rawText + match.command.slice(keyword.length);
       } else {
         ghost.textContent = '';
       }
+
+      const matches = commands
+        .filter(cmd => cmd.command.startsWith(keyword))
+        .slice(0, 2);
+      renderSuggestions(matches);
     });
 
 
     input.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         const finalValue = input.value.trim();
-        
+
         if (!finalValue) {
           window.electronAPI.hideWindow();
         } else {
@@ -74,6 +83,7 @@
 
         input.value = '';
         ghost.textContent = '';
+        renderSuggestions([]);
         selectedIndex = -1;
       } else if (e.key === 'Escape') {
         window.electronAPI.hideWindow();
@@ -88,24 +98,60 @@
       }
     });
 
+    function renderSuggestions(matches) {
+      const limited = matches.slice(0, 2);
+      const container = document.querySelector('.container');
+
+      suggestionsList.innerHTML = '';
+
+      if (limited.length > 0) {
+        suggestionsList.innerHTML = limited.map((cmd, idx) => `
+          <li class="suggestion-item" data-index="${idx}">
+            <div class="suggestion-left">
+              <img src="${cmd.icon || 'google.png'}" alt="icon">
+              <div class="suggestion-text">
+                <div class="suggestion-title">${cmd.command}</div>
+                <div class="suggestion-sub">${cmd.description || ''}</div>
+              </div>
+            </div>
+          </li>
+        `).join('');
+
+        container.classList.remove('rounded');
+        container.classList.add('with-suggestions');
+
+        const baseHeight = 60; // input bar height
+        const itemHeight = 50; // per suggestion
+        const totalHeight = baseHeight + limited.length * itemHeight;
+        window.electronAPI.resizeWindow(totalHeight);
+
+      } else {
+        container.classList.remove('with-suggestions');
+        container.classList.add('rounded');
+
+        const baseHeight = 60;
+        window.electronAPI.resizeWindow(baseHeight);
+      }
+    }
+
+
     window.electronAPI.onReset(() => {
       input.value = '';
       ghost.textContent = '';
+      renderSuggestions([]);
       selectedIndex = -1;
     });
 
-    // If window or input loses focus, hide the search bar
     window.addEventListener('blur', () => {
       window.electronAPI.hideWindow();
     });
 
     input.addEventListener('blur', () => {
-      // Extra safety: hide when clicking outside input
       setTimeout(() => {
         if (document.activeElement !== input) {
           window.electronAPI.hideWindow();
         }
-      }, 100); // small delay to allow click events to complete
+      }, 100);
     });
   </script>
 </body>

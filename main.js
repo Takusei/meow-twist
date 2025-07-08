@@ -6,7 +6,16 @@ import { loadPlugins } from './utils/plugin.js';
 
 app.whenReady().then(() => {
   const pluginMap = loadPlugins(); // Load plugins at startup
-  ipcMain.handle('get-plugins', () => Object.keys(pluginMap));
+  ipcMain.handle('get-plugins', () => {
+    return Object.entries(pluginMap).map(([command, plugin]) => ({
+      command,
+      description: plugin.description || '',
+      icon: plugin.icon || '',
+      url: plugin.url || '',
+      exec: plugin.exec || ''
+    }));
+  });
+
   
   const win = setUpWindow();
   // win.webContents.openDevTools();

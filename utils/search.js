@@ -15,12 +15,10 @@ export const search = async (query, pluginMap, win) => {
     return;
   }
 
-  if (typeof plugin === 'string') {
-    // URL-based plugin
-    const url = plugin.replace('{{query}}', encodeURIComponent(q));
+  if (plugin.url) {
+    const url = plugin.url.replace('{{query}}', encodeURIComponent(q));
     await open(url);
   } else if (plugin.exec) {
-    // Local command plugin
     const command = plugin.exec + (q ? ` ${q}` : '');
     exec(command, (error) => {
       if (error) {
@@ -28,5 +26,6 @@ export const search = async (query, pluginMap, win) => {
       }
     });
   }
+
   hideWindow(win);
-}
+};
