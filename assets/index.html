@@ -48,11 +48,10 @@
 
     input.addEventListener('input', () => {
       const rawText = input.value.trim();
-
       const hasSpace = rawText.includes(' ');
       const keyword = rawText.split(/\s+/)[0].toLowerCase();
 
-      // 🔸 Determine ghost suggestion (only when single word and match exists)
+      // 🔸 Ghost suggestion (only when no space and prefix match)
       if (!keyword || hasSpace) {
         ghost.textContent = '';
       } else {
@@ -62,18 +61,20 @@
           : '';
       }
 
-      // 🔸 Determine matches
+      // 🔸 Suggestions logic
       let matches = [];
 
-      if (!rawText) {
-        matches = [];
+      // ✅ Always check if keyword is a known command
+      const exactMatch = commands.find(cmd => cmd.command === keyword);
+      if (exactMatch) {
+        matches = [exactMatch];
       } else if (!hasSpace) {
         matches = commands.filter(cmd =>
           cmd.command.startsWith(keyword)
         ).slice(0, 2);
       }
 
-      // 🔸 If no matches and user typed something, show fallback Google suggestion
+      // 🔸 Show Google fallback only if no match and user typed something
       if (matches.length === 0 && rawText) {
         matches = [{
           command: 'google',
@@ -85,6 +86,8 @@
 
       renderSuggestions(matches);
     });
+
+
 
     input.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
