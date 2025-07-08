@@ -33,5 +33,10 @@
     "exec": "explorer",
     "description": "Open File Explorer",
     "icon": "explorer.png"
+  },
+  "outlook": {
+    "exec": "start outlook",
+    "description": "Open Microsoft Outlook",
+    "icon": "outlook.png"
   }
 }
